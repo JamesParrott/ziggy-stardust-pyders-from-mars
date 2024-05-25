@@ -45,7 +45,7 @@ def zig_build(argv: list[str], conf: config.ToolPydust | None = None):
         with conf.build_zig.open(mode="w") as f:
             generate_build_zig(f, conf)
 
-    zig_exe = [os.path.expanduser(conf.zig_exe)] if conf.zig_exe else [sys.executable, "-m", "ziglang"]
+    zig_exe = [os.path.expanduser(conf.zig_exe)] if conf.zig_exe else ['zig']
 
     cmds = zig_exe + ["build", "--build-file", conf.build_zig] + argv
 

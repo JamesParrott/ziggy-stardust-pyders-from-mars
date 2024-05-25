@@ -16,3 +16,8 @@ classifiers = [
   "Programming Language :: Python",
 ]
 
+[project.scripts]
+pydust="pydust.__main__:main"
+
+[tool.pydust]
+zig_exe = 'C:\ProgramData\chocolatey\bin\zig.exe'

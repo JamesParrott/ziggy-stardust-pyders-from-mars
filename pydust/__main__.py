@@ -52,7 +52,7 @@ def _parse_exts(exts: list[str], limited_api: bool = True, prefix: str = "") -> 
     _exts = []
 
     def _add_ext(name, path: Path):
-        _exts.append(config.ExtModule(name=name, root=str(path), limited_api=limited_api, prefix=prefix))
+        _exts.append(config.ExtModule(name=name, root=path.as_posix(), limited_api=limited_api))
 
     def _check_path(path: Path):
         assert path.exists(), f"path does not exist: {path}"
@@ -81,12 +81,13 @@ def build(args):
     """Given a list of '<name>=<path>' or '<path>' entries, builds zig-based python extensions"""
     _extensions = _parse_exts(exts=args.extensions, limited_api=args.limited_api, prefix=args.prefix)
     buildzig.zig_build(
-        argv=["install", f"-Dpython-exe={sys.executable}", "-Doptimize=ReleaseSafe"],
+        # argv=["install", f"-Dpython-exe={sys.executable}", "-Doptimize=ReleaseSafe"],
+        argv=["install", f"-Dpython-exe={sys.executable}", "-Dtarget=x86_64-windows"],
         conf=config.ToolPydust(
             zig_exe=args.zig_exe,
-            build_zig=args.build_zig,
+            build_zig=Path(args.build_zig),
             self_managed=args.self_managed,
-            ext_module=_extensions,
+            ext_modules=_extensions,
         ),
     )
 
