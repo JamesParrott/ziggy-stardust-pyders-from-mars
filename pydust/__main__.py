@@ -27,8 +27,8 @@ debug_sp.add_argument("entrypoint")
 build_sp = sub.add_parser(
     "build", help="Build a zig-based python extension.", formatter_class=argparse.ArgumentDefaultsHelpFormatter
 )
-build_sp.add_argument("-z", "--zig-exe", help="zig executable path")
-build_sp.add_argument("-b", "--build-zig", default="build.zig", help="build.zig file")
+build_sp.add_argument("-z", "--zig-exe", help="zig executable path", type=Path)
+build_sp.add_argument("-b", "--build-zig", default="build.zig", help="build.zig file", type=Path)
 build_sp.add_argument("-m", "--self-managed", default=False, action="store_true", help="self-managed mode")
 build_sp.add_argument("-a", "--limited-api", default=True, action="store_true", help="use limited python c-api")
 build_sp.add_argument("-p", "--prefix", default="", help="prefix of built extension")
@@ -52,7 +52,7 @@ def _parse_exts(exts: list[str], limited_api: bool = True, prefix: str = "") -> 
     _exts = []
 
     def _add_ext(name, path: Path):
-        _exts.append(config.ExtModule(name=name, root=str(path), limited_api=limited_api, prefix=prefix))
+        _exts.append(config.ExtModule(name=name, root=path.as_posix(), limited_api=limited_api, prefix=prefix))
 
     def _check_path(path: Path):
         assert path.exists(), f"path does not exist: {path}"
