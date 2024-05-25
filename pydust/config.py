@@ -56,13 +56,13 @@ class ToolPydust:
     self_managed: bool = False
 
     # We rename pluralized config sections so the pyproject.toml reads better.
-    ext_modules: list[ExtModule] = field(alias="ext_module", default_factory=list)
+    ext_modules: list[ExtModule] = field(default_factory=list)
 
     @property
     def pydust_build_zig(self) -> Path:
         return self.build_zig.parent / "pydust.build.zig"
 
-    def __post_init__()(self):
+    def __post_init__(self):
         if self.self_managed and self.ext_modules:
             raise ValueError("ext_modules cannot be defined when using Pydust in self-managed mode.")
 
