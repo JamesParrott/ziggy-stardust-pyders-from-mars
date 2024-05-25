@@ -15,12 +15,12 @@ limitations under the License.
 import functools
 import importlib.metadata
 from pathlib import Path
+from dataclasses import dataclass, field
 
 import tomllib
-from pydantic import BaseModel, Field, model_validator
 
-
-class ExtModule(BaseModel):
+@dataclass
+class ExtModule:
     """Config for a single Zig extension module."""
 
     name: str
@@ -41,8 +41,8 @@ class ExtModule(BaseModel):
     def test_bin(self) -> Path:
         return (Path("zig-out") / "bin" / self.libname).with_suffix(".test.bin")
 
-
-class ToolPydust(BaseModel):
+@dataclass
+class ToolPydust:
     """Model for tool.pydust section of a pyproject.toml."""
 
     zig_exe: Path | None = None
@@ -56,14 +56,13 @@ class ToolPydust(BaseModel):
     self_managed: bool = False
 
     # We rename pluralized config sections so the pyproject.toml reads better.
-    ext_modules: list[ExtModule] = Field(alias="ext_module", default_factory=list)
+    ext_modules: list[ExtModule] = field(alias="ext_module", default_factory=list)
 
     @property
     def pydust_build_zig(self) -> Path:
         return self.build_zig.parent / "pydust.build.zig"
 
-    @model_validator(mode="after")
-    def validate_atts(self):
+    def __post_init__()(self):
         if self.self_managed and self.ext_modules:
             raise ValueError("ext_modules cannot be defined when using Pydust in self-managed mode.")
 
