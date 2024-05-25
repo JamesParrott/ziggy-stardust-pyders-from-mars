@@ -1,54 +1,26 @@
-[tool.poetry]
-name = "ziggy-pydust"
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "pydust"
 version = "0.1.0"
 description = ""
-authors = ["Nicholas Gates <nick@fulcrum.so>"]
-license = "Apache 2.0"
+authors = [{name="Nicholas Gates", email="nick@fulcrum.so"}]
 readme = "README.md"
-packages = [{ include = "pydust" }]
-include = ["src"]
-exclude = ["example"]
-
-[tool.poetry.plugins."pytest11"]
-pydust = "pydust.pytest_plugin"
-
-[tool.poetry.dependencies]
-python = "^3.11"
-ziglang = "^0.11.0"
-pydantic = "^2.3.0"
-setuptools = "^69.0.0"
-black = "^23.9.1"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.0.0"
-ruff = "^0.4.0"
-
-[tool.poetry.group.docs.dependencies]
-# For generating docs
-ziglang = "^0.11.0"
-mkdocs-material = "^9.2.6"
-mkdocs-include-markdown-plugin = { version = "^6.0.1", python = "<3.13" }
-mike = "^2.0.0"
-
-[tool.poetry.group.test.dependencies]
-numpy = "^1.25.2"
-
-[tool.poetry.scripts]
-pydust = "pydust.__main__:main"
-
-[tool.black]
-line-length = 120
-
-[tool.ruff]
-line-length = 120
-select = ["F", "E", "W", "UP", "I001", "I002"]
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.pytest.ini_options]
-testpaths = ["test", "example"]
+license = "Apache-2.0"
+keywords = []
+requires-python = ">=3.11"
+classifiers = [
+  "Programming Language :: Python",
+]
+dependencies = [
+"ziglang >=0.11.0, == 0.*",
+"pydantic >=2.3.0, ==2.*",
+"setuptools >=69.0.0, ==69.*",
+"black >23.9.1, ==23.*",
+]
 
 # Out test modules
 
